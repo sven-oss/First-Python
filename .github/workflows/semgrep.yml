@@ -47,3 +47,35 @@ jobs:
         with:
           sarif_file: semgrep.sarif
         if: always()
+
+name: Security Scan
+
+permissions:
+  contents: read
+  id-token: write
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    env:
+      PROCESSING_MODE: group_cc
+      AUTO_CREATE_PRS: "true"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Security Scanner
+        # Add your SAST tool here (see examples below)
+
+      - name: AppSecAI Security Analysis
+        uses: AppSecureAI/automation-action@v1
+        with:
+          file: scan-results.json
